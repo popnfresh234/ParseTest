@@ -11,7 +11,7 @@ import com.parse.SaveCallback;
 /**
  * Created by Alexander on 3/22/2015.
  */
-public class ModelImpl implements Model {
+public class RestaurantRestaurantModelImpl implements RestaurantModel {
     private static final String TAG = "Restaurant Model";
     private Restaurant mRestaurant;
 

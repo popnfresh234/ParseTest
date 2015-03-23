@@ -7,23 +7,23 @@ import com.dmtaiwan.alexander.parsetest.Utilities.Restaurant;
  */
 public class PresenterImpl implements Presenter, OnFinishedListener{
     private RestaurantView mRestaurantView;
-    private Model mModel;
+    private RestaurantModel mRestaurantModel;
 
     public PresenterImpl(RestaurantView restaurantView) {
         mRestaurantView = restaurantView;
-        mModel = new ModelImpl();
+        mRestaurantModel = new RestaurantRestaurantModelImpl();
     }
 
     @Override
     public void
     StartQueryRestaurant(String queryOrigin, String restaurantId) {
         mRestaurantView.showProgress();
-        mModel.StartQueryRestaurant(queryOrigin, restaurantId, this);
+        mRestaurantModel.StartQueryRestaurant(queryOrigin, restaurantId, this);
     }
 
     @Override
     public void SaveRestaurant(String queryCode, Restaurant restaurant) {
-        mModel.SaveRestaurant(queryCode, restaurant, this);
+        mRestaurantModel.SaveRestaurant(queryCode, restaurant, this);
     }
 
 

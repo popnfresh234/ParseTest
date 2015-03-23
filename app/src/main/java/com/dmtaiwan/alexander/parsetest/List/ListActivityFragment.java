@@ -140,13 +140,11 @@ public class ListActivityFragment extends ListFragment implements ListActivityVi
 
     @Override
     public void showProgress() {
-        Log.i(TAG, "LOADING");
         getActivity().setProgressBarIndeterminateVisibility(true);
     }
 
     @Override
     public void hideProgress() {
-        Log.i(TAG, "LOADED");
         getActivity().setProgressBarIndeterminateVisibility(false);
     }
 

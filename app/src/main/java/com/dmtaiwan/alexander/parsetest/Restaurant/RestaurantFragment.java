@@ -1,10 +1,14 @@
 package com.dmtaiwan.alexander.parsetest.Restaurant;
 
+import android.app.AlertDialog;
 import android.app.Fragment;
 import android.app.TimePickerDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Environment;
+import android.provider.MediaStore;
 import android.support.annotation.Nullable;
 import android.telephony.PhoneNumberUtils;
 import android.util.Log;
@@ -27,6 +31,7 @@ import android.widget.Toast;
 import com.dmtaiwan.alexander.parsetest.List.ListActivity;
 import com.dmtaiwan.alexander.parsetest.List.ListActivityFragment;
 import com.dmtaiwan.alexander.parsetest.R;
+import com.dmtaiwan.alexander.parsetest.Utilities.FileHelper;
 import com.dmtaiwan.alexander.parsetest.Utilities.ParseConstants;
 import com.dmtaiwan.alexander.parsetest.Utilities.Restaurant;
 import com.parse.ParseACL;
@@ -34,6 +39,11 @@ import com.parse.ParseFile;
 import com.parse.ParseUser;
 import com.squareup.picasso.Callback;
 import com.squareup.picasso.Picasso;
+
+import java.io.File;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.Locale;
 
 /**
  * Created by Alexander on 3/22/2015.
@@ -60,7 +70,7 @@ public class RestaurantFragment extends Fragment implements RestaurantView, View
     public static final int PICK_PHOTO_REQUEST = 1;
     public static final int MEDIA_TYPE_IMAGE = 2;
     public static final String MY_RESTAURNT = "myrestaurant";
-    public static final String ALL_RESTAURANTS = "allrestauratns";
+    public static final String ALL_RESTAURANTS = "allrestaurants";
 
     private ParseACL parseACL;
     private Restaurant mRestaurant;
@@ -136,7 +146,7 @@ public class RestaurantFragment extends Fragment implements RestaurantView, View
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragment_restaurant, container, false);
         mPresenter = new PresenterImpl(this);
-        Log.i(TAG, "ON CREATE VIEW");
+
 
         // Setup fields
         setupFields(v);
@@ -147,8 +157,7 @@ public class RestaurantFragment extends Fragment implements RestaurantView, View
     @Override
     public void onResume() {
         super.onResume();
-        if (getActivity().getIntent() != null) {
-
+        if (getActivity().getIntent() != null && !mFromCamera) {
             //Switch between creating a new restaurant and editing an already created restaurant based on QueryCode that indicates how this RestaurantActivity was created
             mQueryCode = getActivity().getIntent().getStringExtra(ListActivityFragment.QUERY_CODE);
             String restaurantId = getActivity().getIntent().getStringExtra(EXTRA_RESTAURANT_ID);
@@ -165,7 +174,6 @@ public class RestaurantFragment extends Fragment implements RestaurantView, View
                 case ListActivityFragment.SEARCH:
                     mPresenter.StartQueryRestaurant(mQueryCode, restaurantId);
                     break;
-
             }
 
         }
@@ -173,6 +181,31 @@ public class RestaurantFragment extends Fragment implements RestaurantView, View
 
     }
 
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        Log.i(TAG, "On Results");
+        mFromCamera = true;
+        mResultCode = resultCode;
+        mRequestCode = requestCode;
+        mData = data;
+        byte[] fileBytes = FileHelper.getByteArrayFromFile(getActivity(),
+                mMediaUri);
+
+        Picasso.with(getActivity()).load(mMediaUri).into(mRestaurantImageView);
+
+        if(mRestaurant!=null) {
+            if (fileBytes == null) {
+                Log.i("Doom", "doom");
+            } else {
+                fileBytes = FileHelper.reduceImageForUpload(fileBytes);
+                String fileName = FileHelper.getFileName(getActivity(), mMediaUri,
+                        mFileType);
+                ParseFile file = new ParseFile(fileName, fileBytes);
+                mRestaurant.setImage(file);
+            }
+        }
+    }
 
     @Override
     public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
@@ -476,21 +509,78 @@ public class RestaurantFragment extends Fragment implements RestaurantView, View
 
             case R.id.saveButton:
                 String queryCode = getActivity().getIntent().getStringExtra(ListActivityFragment.QUERY_CODE);
-                if(mRestaurant == null){
+                if (mRestaurant == null) {
                     mRestaurant = createRestaurant();
                     mPresenter.SaveRestaurant(mQueryCode, mRestaurant);
-                }else{
+                } else {
                     updateFields();
-                    mPresenter.SaveRestaurant(mQueryCode,mRestaurant);
+                    mPresenter.SaveRestaurant(mQueryCode, mRestaurant);
                 }
                 break;
 
             case R.id.cancelButton:
                 getActivity().finish();
                 break;
+
+            case R.id.takePictureButton:
+                AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+                builder.setItems(R.array.camera_choices, mDialogListener);
+                AlertDialog dialog_camera = builder.create();
+                dialog_camera.show();
+                break;
         }
 
+    }
 
+
+    private Uri getOutputMediaFileUri(int mediaType) {
+// check if external storage is mounted
+        if (isExternalStorageAvailable()) {
+            Log.i("test", "testing " + isExternalStorageAvailable());
+// get URI
+// 1. Get the external storage directory
+            String appName = getActivity().getString(R.string.app_name);
+            File mediaStorageDir = new File(
+                    Environment
+                            .getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES),
+                    appName);
+// 2. Create our subdirectory
+            if (!mediaStorageDir.exists()) {
+// create directory, mkdirs returns boolean false if failed,
+// return nullif failed
+                if (!mediaStorageDir.mkdirs()) {
+                    Log.i("DIR ERROR", "Failed to create directory");
+                    return null;
+                }
+            }
+// 3. Create a file name
+// 4 Create a file
+            File mediaFile;
+            Date now = new Date();
+            String timestamp = new SimpleDateFormat("yyyyMMdd_HHmmss",
+                    Locale.US).format(now);
+            String path = mediaStorageDir.getPath() + File.separator;
+// Check media type and create file
+            if (mediaType == MEDIA_TYPE_IMAGE) {
+                mediaFile = new File(path + "IMG_" + timestamp + ".jpg");
+            } else {
+                return null;
+            }
+            Log.i("Filename", "file " + Uri.fromFile(mediaFile));
+// 5 Return the file's URI
+            return Uri.fromFile(mediaFile);
+        } else {
+            return null;
+        }
+    }
+
+    private boolean isExternalStorageAvailable() {
+        String state = Environment.getExternalStorageState();
+        if (state.equals(Environment.MEDIA_MOUNTED)) {
+            return true;
+        } else {
+            return false;
+        }
     }
 
 
@@ -694,6 +784,7 @@ public class RestaurantFragment extends Fragment implements RestaurantView, View
                             public void onSuccess() {
                                 onFinishedLoading();
                             }
+
                             @Override
                             public void onError() {
                             }
@@ -782,6 +873,17 @@ public class RestaurantFragment extends Fragment implements RestaurantView, View
 
         restaurant.setNotes(mNotesField.getText().toString());
 
+        //Set the image if one is available
+        if (mMediaUri != null) {
+            byte[] fileBytes = FileHelper.getByteArrayFromFile(getActivity(),
+                    mMediaUri);
+            fileBytes = FileHelper.reduceImageForUpload(fileBytes);
+            String fileName = FileHelper.getFileName(getActivity(), mMediaUri,
+                    mFileType);
+            ParseFile file = new ParseFile(fileName, fileBytes);
+            restaurant.setImage(file);
+        }
+
         return restaurant;
     }
 
@@ -851,9 +953,11 @@ public class RestaurantFragment extends Fragment implements RestaurantView, View
     @Override
     public void onFinishedCreating() {
         Intent i = new Intent(getActivity(), ListActivity.class);
-        i.putExtra(ListActivityFragment.QUERY_CODE, mQueryCode);
+        i.putExtra(ListActivityFragment.QUERY_CODE, ListActivityFragment.ALL_RESTAURATNS);
+        i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         startActivity(i);
+        getActivity().finish();
     }
 
     @Override
@@ -894,4 +998,34 @@ public class RestaurantFragment extends Fragment implements RestaurantView, View
         checkUserForAuthorOrAdmin();
         loadFields();
     }
+
+    protected DialogInterface.OnClickListener mDialogListener = new DialogInterface.OnClickListener() {
+        @Override
+        public void onClick(DialogInterface dialog, int which) {
+            switch (which) {
+                case 0: // Take picture
+                    Intent takePhotoIntent = new Intent(
+                            MediaStore.ACTION_IMAGE_CAPTURE);
+                    // save file path
+                    mMediaUri = getOutputMediaFileUri(MEDIA_TYPE_IMAGE);
+                    // if mMediaUri is null, storage error
+                    if (mMediaUri == null) {
+                        Toast.makeText(getActivity(),
+                                R.string.external_storage_error, Toast.LENGTH_LONG)
+                                .show();
+                    } else {
+                        // pass photo path to camera
+                        takePhotoIntent
+                                .putExtra(MediaStore.EXTRA_OUTPUT, mMediaUri);
+                        startActivityForResult(takePhotoIntent, TAKE_PHOTO_REQUEST);
+                    }
+                    break;
+                case 1: // Take video
+                    Intent choosePhotoIntent = new Intent(Intent.ACTION_GET_CONTENT);
+                    choosePhotoIntent.setType("image/*");
+                    startActivityForResult(choosePhotoIntent, PICK_PHOTO_REQUEST);
+                    break;
+            }
+        }
+    };
 }

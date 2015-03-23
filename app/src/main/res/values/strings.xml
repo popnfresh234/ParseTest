@@ -74,9 +74,9 @@
     <string name="nav_drawer_recently_updated">Recently Updated</string>
     <string name="nav_drawer_city">View By City</string>
 
-    <!--Toast Messages-->
+    <!--Toast and Dialog Messages-->
     <string name="toast_edit_error_message">Only the original poster may edit this listing</string>
-
+    <string name="external_storage_error">There was a problem accessing your device\'s external storage</string>
     <!--Arrays-->
     <string-array name="category_array">
         <item>Choose a Category</item>
@@ -84,6 +84,11 @@
         <item>Japanese</item>
         <item>Korean</item>
         <item>Western</item>
+    </string-array>
+
+    <string-array name="camera_choices">
+        <item>Take Picture</item>
+        <item>Choose Picture</item>
     </string-array>
 
 </resources>
