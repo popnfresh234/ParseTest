@@ -1,0 +1,89 @@
+<resources>
+    <string name="app_name">Hours</string>
+    <string name="textview_subtitle">Is it Open?</string>
+    <string name="restaurant_title_label">Name</string>
+    <string name="restaurant_address_label">Address</string>
+    <string name="restaurant_notes_label">Notes</string>
+    <string name="restaurant_picture_label">Picture</string>
+    <string name="restaurant_phone_label">Phone Number</string>
+    <string name="restaurant_city_label">City</string>
+    <string name="master_close_label">Close</string>
+    <string name="master_hours_label">Set All Hours</string>
+    <string name="master_open_label">Open</string>
+    <string name="sunday_check_label">Sunday</string>
+    <string name="monday_check_label">Monday</string>
+    <string name="tuesday_check_label">Tuesday</string>
+    <string name="wednesday_check_label">Wednesday</string>
+    <string name="thursday_check_label">Thursday</string>
+    <string name="friday_check_label">Friday</string>
+    <string name="saturday_check_label">Saturday</string>
+
+    <!--ContentDescriptions-->
+    <string name="content_desc_restaurant_image">Restaurant Image</string>
+
+    <string name="hello_world">Hello world!</string>
+    <string name="action_settings">Settings</string>
+
+    <!--Hints-->
+    <string name="hint_password">Enter Password</string>
+    <string name="hint_username">Enter Username</string>
+    <string name="hint_email">Enter E-Mail Address</string>
+    <string name="restaurant_title_hint">Enter Name</string>
+    <string name="restaurant_address_hint">Enter Address</string>
+    <string name="restaurant_notes_hint">Enter Notes Here</string>
+    <string name="restaurant_phone_hint">Enter Phone Number</string>
+    <string name="restaurant_city_hint">Enter City</string>
+
+
+
+
+
+    <!--Buttons-->
+    <string name="button_search">Search</string>
+    <string name="button_all_restaurants">All the Restaurants</string>
+    <string name="button_signup">Sign Up</string>
+    <string name="button_cancel">Cancel</string>
+    <string name="button_login">Login</string>
+    <string name="button_picture">New Picture</string>
+    <string name="button_save">SAVE</string>
+    <string name="button_cancel_restaurant">CANCEL</string>
+
+    <!--Days of the Week Short Strings-->
+    <string name="sunday_short">S</string>
+    <string name="monday_short">M</string>
+    <string name="tuesday_short">T</string>
+    <string name="wednesday_short">W</string>
+    <string name="thursday_short">T</string>
+    <string name="friday_short">F</string>
+    <string name="saturday_short">S</string>
+
+    <string name="menu_logout_label">Logout</string>
+    <string name="menu_quit_label">Quit</string>
+    <string name="new_restaurant">Add New Restaurant</string>
+    <string name="search_title">Search</string>
+
+    <!--NavDrawer Strings-->
+    <string name="drawer_close">drawer_close</string>
+    <string name="drawer_open">drawer_open</string>
+    <string name="nav_drawer_home">Home</string>
+    <string name="nav_drawer_my_favorites">Favorites</string>
+    <string name="nav_drawer_all_restaurants">All Restaurants</string>
+    <string name="nav_drawer_my_restaurants">My Restaurants</string>
+    <string name="nav_drawer_added_today">Added Today</string>
+    <string name="nav_drawer_added_this_week">Added This Week</string>
+    <string name="nav_drawer_recently_updated">Recently Updated</string>
+    <string name="nav_drawer_city">View By City</string>
+
+    <!--Toast Messages-->
+    <string name="toast_edit_error_message">Only the original poster may edit this listing</string>
+
+    <!--Arrays-->
+    <string-array name="category_array">
+        <item>Choose a Category</item>
+        <item>Chinese</item>
+        <item>Japanese</item>
+        <item>Korean</item>
+        <item>Western</item>
+    </string-array>
+
+</resources>
