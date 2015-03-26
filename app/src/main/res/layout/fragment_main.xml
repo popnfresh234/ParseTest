@@ -1,97 +1,50 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/background_fill">
+    android:background="@drawable/background_fill"
+    android:orientation="vertical">
 
-    <ImageView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:src="@drawable/background"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentTop="true"
-        android:scaleType="fitStart"/>
+    <ImageView style="@style/AuthBackgroundImage" />
 
     <TextView
-        android:id="@+id/title"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="32dp"
-        android:textColor="@android:color/white"
-        android:textSize="60sp"
-        android:textStyle="bold"
-        android:layout_alignParentTop="true"
-        android:layout_centerHorizontal="true"
-        android:text="@string/app_name"
-        android:gravity="center_horizontal"
-         />
+        android:id="@+id/text_view_title"
+        style="@style/AuthTitle" />
 
     <TextView
-        android:id="@+id/subtitle"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/title"
-        android:gravity="center_horizontal"
-        android:text="@string/textview_subtitle"
-        android:textColor="@android:color/white"
-        android:textSize="30sp"/>
+        android:id="@+id/text_view_subtitle"
+        style="@style/AuthSubtitle"/>
 
     <LinearLayout
         android:id="@+id/editTextLayout"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@android:color/white"
-        android:layout_marginLeft="@dimen/activity_horizontal_margin"
-        android:layout_marginRight="@dimen/activity_horizontal_margin"
-        android:layout_marginTop="@dimen/activity_vertical_margin"
-        android:orientation="vertical"
-        android:paddingBottom="@dimen/field_vertical_padding"
-        android:paddingTop="@dimen/field_vertical_padding"
-        android:paddingLeft="@dimen/field_horizontal_padding"
-        android:paddingRight="@dimen/field_horizontal_padding"
-        android:layout_below="@id/subtitle">
-        
+        style="@style/AuthFieldContainer">
+
         <EditText
             android:id="@+id/edit_text_search"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:ems="10"
-            android:textColorHint="@color/light_gray"
-            android:textSize="18sp"
-            />
-    
+            style="@style/AuthEditText" />
+
 
     </LinearLayout>
-    
+
     <Button
         android:id="@+id/button_search"
         android:layout_below="@id/editTextLayout"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@drawable/button_custom"
-        android:layout_marginLeft="@dimen/activity_horizontal_margin"
-        android:layout_marginRight="@dimen/activity_horizontal_margin"
-        android:textColor="@color/text_color"
-        android:textSize="13sp"
         android:text="@string/button_search"
-        />
+        style="@style/AuthButton"
+       />
 
     <Button
         android:id="@+id/button_all_restaurants"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_below="@id/button_search"
         android:layout_centerHorizontal="true"
-        android:background="@drawable/button_custom"
         android:layout_marginTop="32dp"
-        android:layout_marginLeft="@dimen/activity_horizontal_margin"
-        android:layout_marginRight="@dimen/activity_horizontal_margin"
+        android:background="@drawable/button_custom"
         android:paddingLeft="32dp"
         android:paddingRight="32dp"
-        android:textColor="@color/text_color"
-        android:textSize="13sp"
         android:text="@string/button_all_restaurants"
-        android:layout_below="@id/button_search"/>
+        style="@style/AuthButton"
+        />
 
 
 </RelativeLayout>

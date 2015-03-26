@@ -272,7 +272,7 @@
                 android:layout_weight="1"
                 android:text="@string/button_save" />
             <Button
-                android:id="@+id/cancelButton"
+                android:id="@+id/button_cancel"
                 style="@style/restaurantSaveAndCancelButtons"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"

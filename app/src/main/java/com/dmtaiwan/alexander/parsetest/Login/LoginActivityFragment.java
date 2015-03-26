@@ -6,13 +6,11 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.util.Log;
 import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ProgressBar;
+import android.widget.TextView;
 
 import com.dmtaiwan.alexander.parsetest.Main.MainActivity;
 import com.dmtaiwan.alexander.parsetest.R;
@@ -27,25 +25,18 @@ public class LoginActivityFragment extends Fragment implements LoginActivityView
         return f;
     }
 
-    private ProgressBar mProgressBar;
     private EditText mUsername;
     private EditText mPassword;
     private Button mLoginButton;
-    private Button mSignupButon;
+    private TextView mSignUpTextView;
+    private TextView mForgotPasswordTextView;
     private LoginPresenter mPresenter;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setHasOptionsMenu(true);
         Log.i("LOGIN ACTIVITY", "ON CREATE");
 
-    }
-
-    @Override
-    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-        super.onCreateOptionsMenu(menu, inflater);
-        inflater.inflate(R.menu.menu_login, menu);
     }
 
     @Nullable
@@ -53,13 +44,12 @@ public class LoginActivityFragment extends Fragment implements LoginActivityView
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragment_login, container, false);
         //Setup Widgets
-        mProgressBar = (ProgressBar) v.findViewById(R.id.progressBar);
         mUsername = (EditText) v.findViewById(R.id.edit_text_username);
         mPassword = (EditText) v.findViewById(R.id.edit_text_password);
         mLoginButton = (Button) v.findViewById(R.id.button_login);
         mLoginButton.setOnClickListener(this);
-        mSignupButon = (Button) v.findViewById(R.id.button_signup);
-        mSignupButon.setOnClickListener(this);
+        mSignUpTextView = (TextView) v.findViewById(R.id.text_view_signup);
+        mSignUpTextView.setOnClickListener(this);
         mPresenter = new LoginPresenterImpl(this);
         return v;
     }
@@ -72,14 +62,19 @@ public class LoginActivityFragment extends Fragment implements LoginActivityView
         mPassword.setText("");
     }
 
+    public void onPause() {
+        super.onPause();
+        getActivity().setProgressBarIndeterminateVisibility(false);
+    }
+
     @Override
     public void showProgress() {
-        mProgressBar.setVisibility(View.VISIBLE);
+        getActivity().setProgressBarIndeterminateVisibility(true);
     }
 
     @Override
     public void hideProgress() {
-        mProgressBar.setVisibility(View.INVISIBLE);
+        getActivity().setProgressBarIndeterminateVisibility(false);
     }
 
     @Override
@@ -109,7 +104,7 @@ public class LoginActivityFragment extends Fragment implements LoginActivityView
                 mPresenter.validateCredentials(mUsername.getText().toString(), mPassword.getText().toString());
                 break;
 
-            case R.id.button_signup:
+            case R.id.text_view_signup:
                 mPresenter.startSignup();
                 break;
         }

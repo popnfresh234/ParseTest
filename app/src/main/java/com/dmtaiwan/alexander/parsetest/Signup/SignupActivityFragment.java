@@ -11,7 +11,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import com.dmtaiwan.alexander.parsetest.R;
@@ -27,7 +26,7 @@ public class SignupActivityFragment extends Fragment implements SignUpView, View
 
     private static final String TAG = "SignUpFragment";
 
-    private ProgressBar mProgressBar;
+
     private EditText mUsername;
     private EditText mPassword;
     private EditText mEmail;
@@ -54,7 +53,7 @@ public class SignupActivityFragment extends Fragment implements SignUpView, View
         View v = inflater.inflate(R.layout.fragment_signup, container, false);
 
         //Setup widgets
-        mProgressBar = (ProgressBar) v.findViewById(R.id.progressBar);
+
         mUsername = (EditText) v.findViewById(R.id.edit_text_username);
         mPassword = (EditText) v.findViewById(R.id.edit_text_password);
         mEmail = (EditText) v.findViewById(R.id.edit_text_email);
@@ -66,6 +65,11 @@ public class SignupActivityFragment extends Fragment implements SignUpView, View
         mPresenter = new SignUpPresenterImpl(this);
 
         return v;
+    }
+
+    public void onPause() {
+        super.onPause();
+        getActivity().setProgressBarIndeterminateVisibility(false);
     }
 
     @Override
@@ -87,12 +91,12 @@ public class SignupActivityFragment extends Fragment implements SignUpView, View
 
     @Override
     public void showProgress() {
-        mProgressBar.setVisibility(View.VISIBLE);
+
     }
 
     @Override
     public void hideProgress() {
-        mProgressBar.setVisibility(View.INVISIBLE);
+
     }
 
     @Override

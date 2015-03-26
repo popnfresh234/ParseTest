@@ -7,5 +7,8 @@ public interface OnFinishedListener {
 
     public void onLoading();
 
-    public void onSuccess();
+    public void onFinishedLoading();
+
+    public void onFinishedUpdatingData();
+
 }

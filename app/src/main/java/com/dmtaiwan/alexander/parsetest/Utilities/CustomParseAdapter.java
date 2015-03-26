@@ -18,20 +18,21 @@ import java.util.List;
  */
 public class CustomParseAdapter extends ParseQueryAdapter<Restaurant> {
     public CustomParseAdapter(Context context, final String queryCode, final String queryString) {
+
 // Use the QueryFactory to construct a PQA that will show all restaurants
+
         super(context, new ParseQueryAdapter.QueryFactory<Restaurant>() {
             public ParseQuery create() {
 
                 ParseQuery<Restaurant> query = new ParseQuery<Restaurant>("Restaurant");
-
                 //query for all restaurants
-                if(queryCode == ListActivityFragment.ALL_RESTAURATNS) {
+                if (queryCode == ListActivityFragment.ALL_RESTAURATNS) {
                     query.whereExists(ParseConstants.KEY_RESTAURANT_TITLE);
                     query.addAscendingOrder(ParseConstants.KEY_RESTAURANT_LOWERCASE_TITLE);
                 }
 
 
-                if(queryCode == ListActivityFragment.SEARCH){
+                if (queryCode == ListActivityFragment.SEARCH) {
                     ParseQuery<Restaurant> queryTitle = new ParseQuery<Restaurant>(
                             "Restaurant");
                     queryTitle.whereContains(
@@ -57,14 +58,15 @@ public class CustomParseAdapter extends ParseQueryAdapter<Restaurant> {
 
                 }
                 return query;
+
             }
+
         });
     }
 
 
-
     @Override
-    public View getItemView(Restaurant restaurant, View v, ViewGroup parent) {
+    public View getItemView(final Restaurant restaurant, View v, ViewGroup parent) {
         if (v == null) {
             v = View.inflate(getContext(), R.layout.parse_list_item, null);
         }
@@ -97,7 +99,8 @@ public class CustomParseAdapter extends ParseQueryAdapter<Restaurant> {
         TextView saturday = (TextView) v
                 .findViewById(R.id.restaurant_list_saturday);
 
-        //Set stars if restaurant is in the favorites list
+
+        //Fix the damn favorites
 //        ImageView favoriteImage = (ImageView) v.findViewById(R.id.favourite_image);
 //        favoriteImage.setBackgroundResource(R.drawable.ic_rating_not_important);
 //        for(Restaurant r : mFavorites){
@@ -144,4 +147,6 @@ public class CustomParseAdapter extends ParseQueryAdapter<Restaurant> {
         }
         return v;
     }
+
+
 }

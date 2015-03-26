@@ -3,6 +3,8 @@ package com.dmtaiwan.alexander.parsetest.List;
 import android.content.Context;
 
 import com.dmtaiwan.alexander.parsetest.Utilities.CustomParseAdapter;
+import com.dmtaiwan.alexander.parsetest.Utilities.Restaurant;
+import com.parse.ParseUser;
 
 /**
  * Created by Alexander on 3/19/2015.
@@ -22,12 +24,26 @@ public class ListPresenterImpl implements ListPresenter, OnFinishedListener {
     }
 
     @Override
+    public void DeleteRestaurant(Restaurant restaurant) {
+        mModel.DeleteRestaurant( restaurant, this);
+    }
+
+    @Override
+    public void SaveUserRelation(ParseUser currentUser) {
+        mModel.SaveUserRelation(currentUser, this);
+    }
+
+    @Override
     public void onLoading() {
         mListActivityView.showProgress();
     }
 
     @Override
-    public void onSuccess() {
+    public void onFinishedLoading() {
         mListActivityView.hideProgress();
+    }
+
+    public void onFinishedUpdatingData() {
+        mListActivityView.onFinishedUpdatingData();
     }
 }

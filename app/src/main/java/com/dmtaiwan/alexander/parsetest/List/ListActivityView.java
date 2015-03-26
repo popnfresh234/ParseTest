@@ -8,4 +8,6 @@ public interface ListActivityView {
     public void showProgress();
 
     public void hideProgress();
+
+    public void onFinishedUpdatingData();
 }

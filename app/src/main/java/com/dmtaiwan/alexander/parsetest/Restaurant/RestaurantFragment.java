@@ -2,7 +2,6 @@ package com.dmtaiwan.alexander.parsetest.Restaurant;
 
 import android.app.AlertDialog;
 import android.app.Fragment;
-import android.app.TimePickerDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
@@ -25,9 +24,10 @@ import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.Spinner;
-import android.widget.TimePicker;
 import android.widget.Toast;
 
+import com.android.datetimepicker.time.RadialPickerLayout;
+import com.android.datetimepicker.time.TimePickerDialog;
 import com.dmtaiwan.alexander.parsetest.List.ListActivity;
 import com.dmtaiwan.alexander.parsetest.List.ListActivityFragment;
 import com.dmtaiwan.alexander.parsetest.R;
@@ -182,6 +182,12 @@ public class RestaurantFragment extends Fragment implements RestaurantView, View
     }
 
     @Override
+    public void onPause() {
+        super.onPause();
+        getActivity().setProgressBarIndeterminateVisibility(false);
+    }
+
+    @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         Log.i(TAG, "On Results");
@@ -194,7 +200,7 @@ public class RestaurantFragment extends Fragment implements RestaurantView, View
 
         Picasso.with(getActivity()).load(mMediaUri).into(mRestaurantImageView);
 
-        if(mRestaurant!=null) {
+        if (mRestaurant != null) {
             if (fileBytes == null) {
                 Log.i("Doom", "doom");
             } else {
@@ -226,285 +232,237 @@ public class RestaurantFragment extends Fragment implements RestaurantView, View
                 break;
 
             case R.id.sunday_hours_open:
-                TimePickerDialog dialog = new TimePickerDialog(getActivity(),
-                        new TimePickerDialog.OnTimeSetListener() {
-                            @Override
-                            public void onTimeSet(TimePicker view, int hourOfDay,
-                                                  int minute) {
-                                mSunday.setChecked(true);
-                                mSundayOpenButton.setText(new StringBuilder()
-                                        .append(padding_str(hourOfDay)).append(":")
-                                        .append(padding_str(minute)));
-                            }
-                        }, 7, 0, true);
-                dialog.show();
+
+                TimePickerDialog.newInstance(new TimePickerDialog.OnTimeSetListener() {
+                    @Override
+                    public void onTimeSet(RadialPickerLayout radialPickerLayout, int hourOfDay, int minute) {
+                        mSunday.setChecked(true);
+                        mSundayOpenButton.setText(new StringBuilder()
+                                .append(padding_str(hourOfDay)).append(":")
+                                .append(padding_str(minute)));
+                    }
+                }, 7, 0, true).show(getActivity().getFragmentManager(), "timepicker");
                 break;
 
             case R.id.sunday_hours_close:
-                Log.i("Test", "Test");
-                dialog = new TimePickerDialog(getActivity(),
-                        new TimePickerDialog.OnTimeSetListener() {
-                            @Override
-                            public void onTimeSet(TimePicker view, int hourOfDay,
-                                                  int minute) {
-                                mSunday.setChecked(true);
-                                mSundayCloseButton.setText(new StringBuilder()
-                                        .append(padding_str(hourOfDay)).append(":")
-                                        .append(padding_str(minute)));
-                            }
-                        }, 21, 0, true);
-                dialog.show();
+                TimePickerDialog.newInstance(new TimePickerDialog.OnTimeSetListener() {
+                    @Override
+                    public void onTimeSet(RadialPickerLayout radialPickerLayout, int hourOfDay, int minute) {
+                        mSunday.setChecked(true);
+                        mSundayCloseButton.setText(new StringBuilder()
+                                .append(padding_str(hourOfDay)).append(":")
+                                .append(padding_str(minute)));
+                    }
+                }, 21, 0, true).show(getActivity().getFragmentManager(), "timepicker");
                 break;
 
+//
             case R.id.monday_hours_open:
-                dialog = new TimePickerDialog(getActivity(),
-                        new TimePickerDialog.OnTimeSetListener() {
-                            @Override
-                            public void onTimeSet(TimePicker view, int hourOfDay,
-                                                  int minute) {
-                                mMonday.setChecked(true);
-                                mMondayOpenButton.setText(new StringBuilder()
-                                        .append(padding_str(hourOfDay)).append(":")
-                                        .append(padding_str(minute)));
-                            }
-                        }, 7, 0, true);
-                dialog.show();
+                TimePickerDialog.newInstance(new TimePickerDialog.OnTimeSetListener() {
+                    @Override
+                    public void onTimeSet(RadialPickerLayout radialPickerLayout, int hourOfDay, int minute) {
+                        mMonday.setChecked(true);
+                        mMondayOpenButton.setText(new StringBuilder()
+                                .append(padding_str(hourOfDay)).append(":")
+                                .append(padding_str(minute)));
+                    }
+                }, 7, 0, true).show(getActivity().getFragmentManager(), "timepicker");
                 break;
-
+//
             case R.id.monday_hours_close:
-                dialog = new TimePickerDialog(getActivity(),
-                        new TimePickerDialog.OnTimeSetListener() {
-                            @Override
-                            public void onTimeSet(TimePicker view, int hourOfDay,
-                                                  int minute) {
-                                mMonday.setChecked(true);
-                                mMondayCloseButton.setText(new StringBuilder()
-                                        .append(padding_str(hourOfDay)).append(":")
-                                        .append(padding_str(minute)));
-                            }
-                        }, 21, 0, true);
-                dialog.show();
+                TimePickerDialog.newInstance(new TimePickerDialog.OnTimeSetListener() {
+                    @Override
+                    public void onTimeSet(RadialPickerLayout radialPickerLayout, int hourOfDay, int minute) {
+                        mMonday.setChecked(true);
+                        mMondayCloseButton.setText(new StringBuilder()
+                                .append(padding_str(hourOfDay)).append(":")
+                                .append(padding_str(minute)));
+                    }
+                }, 21, 0, true).show(getActivity().getFragmentManager(), "timepicker");
                 break;
-
+//
             case R.id.tuesday_hours_open:
-                dialog = new TimePickerDialog(getActivity(),
-                        new TimePickerDialog.OnTimeSetListener() {
-                            @Override
-                            public void onTimeSet(TimePicker view, int hourOfDay,
-                                                  int minute) {
-                                mTuesday.setChecked(true);
-                                mTuesdayOpenButton.setText(new StringBuilder()
-                                        .append(padding_str(hourOfDay)).append(":")
-                                        .append(padding_str(minute)));
-                            }
-                        }, 7, 0, true);
-                dialog.show();
+                TimePickerDialog.newInstance(new TimePickerDialog.OnTimeSetListener() {
+                    @Override
+                    public void onTimeSet(RadialPickerLayout radialPickerLayout, int hourOfDay, int minute) {
+                        mTuesday.setChecked(true);
+                        mTuesdayOpenButton.setText(new StringBuilder()
+                                .append(padding_str(hourOfDay)).append(":")
+                                .append(padding_str(minute)));
+                    }
+                }, 7, 0, true).show(getActivity().getFragmentManager(), "timepicker");
                 break;
-
+//
             case R.id.tuesday_hours_close:
-                dialog = new TimePickerDialog(getActivity(),
-                        new TimePickerDialog.OnTimeSetListener() {
-                            @Override
-                            public void onTimeSet(TimePicker view, int hourOfDay,
-                                                  int minute) {
-                                mTuesday.setChecked(true);
-                                mTuesdayCloseButton.setText(new StringBuilder()
-                                        .append(padding_str(hourOfDay)).append(":")
-                                        .append(padding_str(minute)));
-                            }
-                        }, 21, 0, true);
-                dialog.show();
+                TimePickerDialog.newInstance(new TimePickerDialog.OnTimeSetListener() {
+                    @Override
+                    public void onTimeSet(RadialPickerLayout radialPickerLayout, int hourOfDay, int minute) {
+                        mTuesday.setChecked(true);
+                        mTuesdayCloseButton.setText(new StringBuilder()
+                                .append(padding_str(hourOfDay)).append(":")
+                                .append(padding_str(minute)));
+                    }
+                }, 21, 0, true).show(getActivity().getFragmentManager(), "timepicker");
                 break;
-
+//
             case R.id.wednesday_hours_open:
-                dialog = new TimePickerDialog(getActivity(),
-                        new TimePickerDialog.OnTimeSetListener() {
-                            @Override
-                            public void onTimeSet(TimePicker view, int hourOfDay,
-                                                  int minute) {
-                                mWednesday.setChecked(true);
-                                mWednesdayOpenButton.setText(new StringBuilder()
-                                        .append(padding_str(hourOfDay)).append(":")
-                                        .append(padding_str(minute)));
-                            }
-                        }, 7, 0, true);
-                dialog.show();
+                TimePickerDialog.newInstance(new TimePickerDialog.OnTimeSetListener() {
+                    @Override
+                    public void onTimeSet(RadialPickerLayout radialPickerLayout, int hourOfDay, int minute) {
+                        mWednesday.setChecked(true);
+                        mWednesdayOpenButton.setText(new StringBuilder()
+                                .append(padding_str(hourOfDay)).append(":")
+                                .append(padding_str(minute)));
+                    }
+                }, 7, 0, true).show(getActivity().getFragmentManager(), "timepicker");
                 break;
-
+//
             case R.id.wednesday_hours_close:
-                dialog = new TimePickerDialog(getActivity(),
-                        new TimePickerDialog.OnTimeSetListener() {
-                            @Override
-                            public void onTimeSet(TimePicker view, int hourOfDay,
-                                                  int minute) {
-                                mWednesday.setChecked(true);
-                                mWednesdayCloseButton.setText(new StringBuilder()
-                                        .append(padding_str(hourOfDay)).append(":")
-                                        .append(padding_str(minute)));
-                            }
-                        }, 21, 0, true);
-                dialog.show();
+                TimePickerDialog.newInstance(new TimePickerDialog.OnTimeSetListener() {
+                    @Override
+                    public void onTimeSet(RadialPickerLayout radialPickerLayout, int hourOfDay, int minute) {
+                        mWednesday.setChecked(true);
+                        mWednesdayCloseButton.setText(new StringBuilder()
+                                .append(padding_str(hourOfDay)).append(":")
+                                .append(padding_str(minute)));
+                    }
+                }, 21, 0, true).show(getActivity().getFragmentManager(), "timepicker");
                 break;
-
+//
             case R.id.thursday_hours_open:
-                dialog = new TimePickerDialog(getActivity(),
-                        new TimePickerDialog.OnTimeSetListener() {
-                            @Override
-                            public void onTimeSet(TimePicker view, int hourOfDay,
-                                                  int minute) {
-                                mThursday.setChecked(true);
-                                mThursdayOpenButton.setText(new StringBuilder()
-                                        .append(padding_str(hourOfDay)).append(":")
-                                        .append(padding_str(minute)));
-                            }
-                        }, 7, 0, true);
-                dialog.show();
+                TimePickerDialog.newInstance(new TimePickerDialog.OnTimeSetListener() {
+                    @Override
+                    public void onTimeSet(RadialPickerLayout radialPickerLayout, int hourOfDay, int minute) {
+                        mThursday.setChecked(true);
+                        mThursdayOpenButton.setText(new StringBuilder()
+                                .append(padding_str(hourOfDay)).append(":")
+                                .append(padding_str(minute)));
+                    }
+                }, 7, 0, true).show(getActivity().getFragmentManager(), "timepicker");
                 break;
-
+//
             case R.id.thursday_hours_close:
-                dialog = new TimePickerDialog(getActivity(),
-                        new TimePickerDialog.OnTimeSetListener() {
-                            @Override
-                            public void onTimeSet(TimePicker view, int hourOfDay,
-                                                  int minute) {
-                                mThursday.setChecked(true);
-                                mThursdayCloseButton.setText(new StringBuilder()
-                                        .append(padding_str(hourOfDay)).append(":")
-                                        .append(padding_str(minute)));
-                            }
-                        }, 21, 0, true);
-                dialog.show();
+                TimePickerDialog.newInstance(new TimePickerDialog.OnTimeSetListener() {
+                    @Override
+                    public void onTimeSet(RadialPickerLayout radialPickerLayout, int hourOfDay, int minute) {
+                        mThursday.setChecked(true);
+                        mThursdayCloseButton.setText(new StringBuilder()
+                                .append(padding_str(hourOfDay)).append(":")
+                                .append(padding_str(minute)));
+                    }
+                }, 21, 0, true).show(getActivity().getFragmentManager(), "timepicker");
                 break;
-
+//
             case R.id.friday_hours_open:
-                dialog = new TimePickerDialog(getActivity(),
-                        new TimePickerDialog.OnTimeSetListener() {
-                            @Override
-                            public void onTimeSet(TimePicker view, int hourOfDay,
-                                                  int minute) {
-                                mThursday.setChecked(true);
-                                mFridayOpenButton.setText(new StringBuilder()
-                                        .append(padding_str(hourOfDay)).append(":")
-                                        .append(padding_str(minute)));
-                            }
-                        }, 7, 0, true);
-                dialog.show();
+                TimePickerDialog.newInstance(new TimePickerDialog.OnTimeSetListener() {
+                    @Override
+                    public void onTimeSet(RadialPickerLayout radialPickerLayout, int hourOfDay, int minute) {
+                        mFriday.setChecked(true);
+                        mFridayOpenButton.setText(new StringBuilder()
+                                .append(padding_str(hourOfDay)).append(":")
+                                .append(padding_str(minute)));
+                    }
+                }, 7, 0, true).show(getActivity().getFragmentManager(), "timepicker");
                 break;
-
+//
             case R.id.friday_hours_close:
-                dialog = new TimePickerDialog(getActivity(),
-                        new TimePickerDialog.OnTimeSetListener() {
-                            @Override
-                            public void onTimeSet(TimePicker view, int hourOfDay,
-                                                  int minute) {
-                                mFriday.setChecked(true);
-                                mFridayCloseButton.setText(new StringBuilder()
-                                        .append(padding_str(hourOfDay)).append(":")
-                                        .append(padding_str(minute)));
-                            }
-                        }, 21, 0, true);
-                dialog.show();
+                TimePickerDialog.newInstance(new TimePickerDialog.OnTimeSetListener() {
+                    @Override
+                    public void onTimeSet(RadialPickerLayout radialPickerLayout, int hourOfDay, int minute) {
+                        mFriday.setChecked(true);
+                        mFridayCloseButton.setText(new StringBuilder()
+                                .append(padding_str(hourOfDay)).append(":")
+                                .append(padding_str(minute)));
+                    }
+                }, 21, 0, true).show(getActivity().getFragmentManager(), "timepicker");
                 break;
-
+//
             case R.id.saturday_hours_open:
-                dialog = new TimePickerDialog(getActivity(),
-                        new TimePickerDialog.OnTimeSetListener() {
-                            @Override
-                            public void onTimeSet(TimePicker view, int hourOfDay,
-                                                  int minute) {
-                                mSaturday.setChecked(true);
-                                mSaturdayOpenButton.setText(new StringBuilder()
-                                        .append(padding_str(hourOfDay)).append(":")
-                                        .append(padding_str(minute)));
-                            }
-                        }, 7, 0, true);
-                dialog.show();
+                TimePickerDialog.newInstance(new TimePickerDialog.OnTimeSetListener() {
+                    @Override
+                    public void onTimeSet(RadialPickerLayout radialPickerLayout, int hourOfDay, int minute) {
+                        mSaturday.setChecked(true);
+                        mSaturdayOpenButton.setText(new StringBuilder()
+                                .append(padding_str(hourOfDay)).append(":")
+                                .append(padding_str(minute)));
+                    }
+                }, 7, 0, true).show(getActivity().getFragmentManager(), "timepicker");
                 break;
-
             case R.id.saturday_hours_close:
-                dialog = new TimePickerDialog(getActivity(),
-                        new TimePickerDialog.OnTimeSetListener() {
-                            @Override
-                            public void onTimeSet(TimePicker view, int hourOfDay,
-                                                  int minute) {
-                                mSaturday.setChecked(true);
-                                mSaturdayCloseButton.setText(new StringBuilder()
-                                        .append(padding_str(hourOfDay)).append(":")
-                                        .append(padding_str(minute)));
-                            }
-                        }, 21, 0, true);
-                dialog.show();
+                TimePickerDialog.newInstance(new TimePickerDialog.OnTimeSetListener() {
+                    @Override
+                    public void onTimeSet(RadialPickerLayout radialPickerLayout, int hourOfDay, int minute) {
+                        mSaturday.setChecked(true);
+                        mSaturdayCloseButton.setText(new StringBuilder()
+                                .append(padding_str(hourOfDay)).append(":")
+                                .append(padding_str(minute)));
+                    }
+                }, 21, 0, true).show(getActivity().getFragmentManager(), "timepicker");
                 break;
-
+//
             case R.id.master_hours_open:
-                dialog = new TimePickerDialog(getActivity(),
-                        new TimePickerDialog.OnTimeSetListener() {
-                            @Override
-                            public void onTimeSet(TimePicker view, int hourOfDay,
-                                                  int minute) {
-                                mSunday.setChecked(true);
-                                mMonday.setChecked(true);
-                                mTuesday.setChecked(true);
-                                mWednesday.setChecked(true);
-                                mThursday.setChecked(true);
-                                mFriday.setChecked(true);
-                                mSaturday.setChecked(true);
-                                mSundayOpenButton.setText(new StringBuilder()
-                                        .append(padding_str(hourOfDay)).append(":")
-                                        .append(padding_str(minute)));
-                                mMondayOpenButton.setText(new StringBuilder()
-                                        .append(padding_str(hourOfDay)).append(":")
-                                        .append(padding_str(minute)));
-                                mTuesdayOpenButton.setText(new StringBuilder()
-                                        .append(padding_str(hourOfDay)).append(":")
-                                        .append(padding_str(minute)));
-                                mWednesdayOpenButton.setText(new StringBuilder()
-                                        .append(padding_str(hourOfDay)).append(":")
-                                        .append(padding_str(minute)));
-                                mThursdayOpenButton.setText(new StringBuilder()
-                                        .append(padding_str(hourOfDay)).append(":")
-                                        .append(padding_str(minute)));
-                                mFridayOpenButton.setText(new StringBuilder()
-                                        .append(padding_str(hourOfDay)).append(":")
-                                        .append(padding_str(minute)));
-                                mSaturdayOpenButton.setText(new StringBuilder()
-                                        .append(padding_str(hourOfDay)).append(":")
-                                        .append(padding_str(minute)));
-                            }
-                        }, 7, 0, true);
-                dialog.show();
+                new TimePickerDialog().newInstance(new TimePickerDialog.OnTimeSetListener() {
+                    @Override
+                    public void onTimeSet(RadialPickerLayout radialPickerLayout, int hourOfDay, int minute) {
+                        mSunday.setChecked(true);
+                        mMonday.setChecked(true);
+                        mTuesday.setChecked(true);
+                        mWednesday.setChecked(true);
+                        mThursday.setChecked(true);
+                        mFriday.setChecked(true);
+                        mSaturday.setChecked(true);
+                        mSundayOpenButton.setText(new StringBuilder()
+                                .append(padding_str(hourOfDay)).append(":")
+                                .append(padding_str(minute)));
+                        mMondayOpenButton.setText(new StringBuilder()
+                                .append(padding_str(hourOfDay)).append(":")
+                                .append(padding_str(minute)));
+                        mTuesdayOpenButton.setText(new StringBuilder()
+                                .append(padding_str(hourOfDay)).append(":")
+                                .append(padding_str(minute)));
+                        mWednesdayOpenButton.setText(new StringBuilder()
+                                .append(padding_str(hourOfDay)).append(":")
+                                .append(padding_str(minute)));
+                        mThursdayOpenButton.setText(new StringBuilder()
+                                .append(padding_str(hourOfDay)).append(":")
+                                .append(padding_str(minute)));
+                        mFridayOpenButton.setText(new StringBuilder()
+                                .append(padding_str(hourOfDay)).append(":")
+                                .append(padding_str(minute)));
+                        mSaturdayOpenButton.setText(new StringBuilder()
+                                .append(padding_str(hourOfDay)).append(":")
+                                .append(padding_str(minute)));
+                    }
+                }, 7, 0, true).show(getActivity().getFragmentManager(), "timepicker");
                 break;
 
             case R.id.master_hours_close:
-                dialog = new TimePickerDialog(getActivity(),
-                        new TimePickerDialog.OnTimeSetListener() {
-                            @Override
-                            public void onTimeSet(TimePicker view, int hourOfDay,
-                                                  int minute) {
-                                mSundayCloseButton.setText(new StringBuilder()
-                                        .append(padding_str(hourOfDay)).append(":")
-                                        .append(padding_str(minute)));
-                                mMondayCloseButton.setText(new StringBuilder()
-                                        .append(padding_str(hourOfDay)).append(":")
-                                        .append(padding_str(minute)));
-                                mTuesdayCloseButton.setText(new StringBuilder()
-                                        .append(padding_str(hourOfDay)).append(":")
-                                        .append(padding_str(minute)));
-                                mWednesdayCloseButton.setText(new StringBuilder()
-                                        .append(padding_str(hourOfDay)).append(":")
-                                        .append(padding_str(minute)));
-                                mThursdayCloseButton.setText(new StringBuilder()
-                                        .append(padding_str(hourOfDay)).append(":")
-                                        .append(padding_str(minute)));
-                                mFridayCloseButton.setText(new StringBuilder()
-                                        .append(padding_str(hourOfDay)).append(":")
-                                        .append(padding_str(minute)));
-                                mSaturdayCloseButton.setText(new StringBuilder()
-                                        .append(padding_str(hourOfDay)).append(":")
-                                        .append(padding_str(minute)));
-                            }
-                        }, 21, 0, true);
-                dialog.show();
+                new TimePickerDialog().newInstance(new TimePickerDialog.OnTimeSetListener() {
+                    @Override
+                    public void onTimeSet(RadialPickerLayout radialPickerLayout, int hourOfDay, int minute) {
+                        mSundayCloseButton.setText(new StringBuilder()
+                                .append(padding_str(hourOfDay)).append(":")
+                                .append(padding_str(minute)));
+                        mMondayCloseButton.setText(new StringBuilder()
+                                .append(padding_str(hourOfDay)).append(":")
+                                .append(padding_str(minute)));
+                        mTuesdayCloseButton.setText(new StringBuilder()
+                                .append(padding_str(hourOfDay)).append(":")
+                                .append(padding_str(minute)));
+                        mWednesdayCloseButton.setText(new StringBuilder()
+                                .append(padding_str(hourOfDay)).append(":")
+                                .append(padding_str(minute)));
+                        mThursdayCloseButton.setText(new StringBuilder()
+                                .append(padding_str(hourOfDay)).append(":")
+                                .append(padding_str(minute)));
+                        mFridayCloseButton.setText(new StringBuilder()
+                                .append(padding_str(hourOfDay)).append(":")
+                                .append(padding_str(minute)));
+                        mSaturdayCloseButton.setText(new StringBuilder()
+                                .append(padding_str(hourOfDay)).append(":")
+                                .append(padding_str(minute)));
+                    }
+                }, 21, 0, true).show(getActivity().getFragmentManager(), "timepicker");
                 break;
 
             case R.id.saveButton:
@@ -518,7 +476,7 @@ public class RestaurantFragment extends Fragment implements RestaurantView, View
                 }
                 break;
 
-            case R.id.cancelButton:
+            case R.id.button_cancel:
                 getActivity().finish();
                 break;
 
@@ -690,7 +648,7 @@ public class RestaurantFragment extends Fragment implements RestaurantView, View
                 .findViewById(R.id.restaurantImageView);
         mSaveButton = (Button) v.findViewById(R.id.saveButton);
         mSaveButton.setOnClickListener(this);
-        mCancelButton = (Button) v.findViewById(R.id.cancelButton);
+        mCancelButton = (Button) v.findViewById(R.id.button_cancel);
         mCancelButton.setOnClickListener(this);
     }
 
