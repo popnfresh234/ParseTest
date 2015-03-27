@@ -10,4 +10,6 @@ public interface ListActivityView {
     public void hideProgress();
 
     public void onFinishedUpdatingData();
+
+
 }

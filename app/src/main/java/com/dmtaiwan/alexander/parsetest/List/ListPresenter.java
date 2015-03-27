@@ -16,4 +16,6 @@ public interface ListPresenter {
     public void DeleteRestaurant(Restaurant restaurant);
 
     public void SaveUserRelation(ParseUser currentUser);
+
+
 }

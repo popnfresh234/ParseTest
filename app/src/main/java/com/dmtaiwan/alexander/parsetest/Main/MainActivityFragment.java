@@ -96,7 +96,7 @@ public class MainActivityFragment extends Fragment implements View.OnClickListen
         int id = v.getId();
         switch (id) {
             case R.id.button_all_restaurants:
-                i.putExtra(ListActivityFragment.QUERY_CODE, ListActivityFragment.ALL_RESTAURATNS);
+                i.putExtra(ListActivityFragment.QUERY_CODE, ListActivityFragment.ALL_RESTAURANTS);
                 startActivity(i);
                 break;
 

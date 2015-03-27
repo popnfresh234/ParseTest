@@ -46,4 +46,6 @@ public class ListPresenterImpl implements ListPresenter, OnFinishedListener {
     public void onFinishedUpdatingData() {
         mListActivityView.onFinishedUpdatingData();
     }
+
+
 }

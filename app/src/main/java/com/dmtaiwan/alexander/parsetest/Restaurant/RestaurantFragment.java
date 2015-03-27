@@ -12,8 +12,6 @@ import android.support.annotation.Nullable;
 import android.telephony.PhoneNumberUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
@@ -125,7 +123,6 @@ public class RestaurantFragment extends Fragment implements RestaurantView, View
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setHasOptionsMenu(true);
         // setup ACL to control read/write access
 
         parseACL = new ParseACL(ParseUser.getCurrentUser());
@@ -133,12 +130,6 @@ public class RestaurantFragment extends Fragment implements RestaurantView, View
         parseACL.setPublicWriteAccess(false);
         parseACL.setWriteAccess("e7So6F4ytk", true);
         parseACL.setWriteAccess("45LT0GnGVU", true);
-    }
-
-    @Override
-    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-        super.onCreateOptionsMenu(menu, inflater);
-        inflater.inflate(R.menu.menu_list, menu);
     }
 
     @Nullable
@@ -167,7 +158,7 @@ public class RestaurantFragment extends Fragment implements RestaurantView, View
                 case RestaurantFragment.NEW_RESTAURANT:
                     break;
 
-                case ListActivityFragment.ALL_RESTAURATNS:
+                case ListActivityFragment.ALL_RESTAURANTS:
                     mPresenter.StartQueryRestaurant(mQueryCode, restaurantId);
                     break;
 
@@ -911,7 +902,7 @@ public class RestaurantFragment extends Fragment implements RestaurantView, View
     @Override
     public void onFinishedCreating() {
         Intent i = new Intent(getActivity(), ListActivity.class);
-        i.putExtra(ListActivityFragment.QUERY_CODE, ListActivityFragment.ALL_RESTAURATNS);
+        i.putExtra(ListActivityFragment.QUERY_CODE, ListActivityFragment.ALL_RESTAURANTS);
         i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         startActivity(i);

@@ -3,12 +3,17 @@ package com.dmtaiwan.alexander.parsetest.Utilities;
 import android.content.Context;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.dmtaiwan.alexander.parsetest.List.ListActivityFragment;
 import com.dmtaiwan.alexander.parsetest.R;
+import com.parse.FindCallback;
+import com.parse.ParseException;
 import com.parse.ParseQuery;
 import com.parse.ParseQueryAdapter;
+import com.parse.ParseRelation;
+import com.parse.ParseUser;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -26,7 +31,7 @@ public class CustomParseAdapter extends ParseQueryAdapter<Restaurant> {
 
                 ParseQuery<Restaurant> query = new ParseQuery<Restaurant>("Restaurant");
                 //query for all restaurants
-                if (queryCode == ListActivityFragment.ALL_RESTAURATNS) {
+                if (queryCode == ListActivityFragment.ALL_RESTAURANTS) {
                     query.whereExists(ParseConstants.KEY_RESTAURANT_TITLE);
                     query.addAscendingOrder(ParseConstants.KEY_RESTAURANT_LOWERCASE_TITLE);
                 }
@@ -101,13 +106,22 @@ public class CustomParseAdapter extends ParseQueryAdapter<Restaurant> {
 
 
         //Fix the damn favorites
-//        ImageView favoriteImage = (ImageView) v.findViewById(R.id.favourite_image);
-//        favoriteImage.setBackgroundResource(R.drawable.ic_rating_not_important);
-//        for(Restaurant r : mFavorites){
-//            if (r.getObjectId().equals(restaurant.getObjectId())){
-//                favoriteImage.setBackgroundResource(R.drawable.ic_rating_important);
-//            }
-//        }
+        final ImageView favoriteImage = (ImageView) v.findViewById(R.id.favourite_image);
+        favoriteImage.setBackgroundResource(R.drawable.ic_rating_not_important);
+
+        ParseRelation<Restaurant> relation = ParseUser.getCurrentUser().getRelation(ParseConstants.RELATION_FAVORITE);
+        ParseQuery<Restaurant> relationQuery = relation.getQuery();
+        relationQuery.findInBackground(new FindCallback<Restaurant>() {
+            @Override
+            public void done(List<Restaurant> restaurants, ParseException e) {
+                for (Restaurant r : restaurants) {
+                    if (r.getObjectId().equals(restaurant.getObjectId())) {
+                        favoriteImage.setBackgroundResource(R.drawable.ic_rating_important);
+                    }
+                }
+            }
+        });
+
 
         // Set text to red if not open
         if (restaurant.getSunday() == false) {

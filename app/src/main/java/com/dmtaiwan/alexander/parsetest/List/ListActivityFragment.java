@@ -38,8 +38,8 @@ public class ListActivityFragment extends ListFragment implements ListActivityVi
 
     // Query codes for arguments for identifying how fragment was created
     public static final String QUERY_CODE = "query_code";
-    public static final String MY_RESTAURATNS = "my_restaurants";
-    public static final String ALL_RESTAURATNS = "all_restaurants";
+    public static final String MY_RESTAURANTS = "my_restaurants";
+    public static final String ALL_RESTAURANTS = "all_restaurants";
     public static final String SEARCH = "search";
     public static final String RECENT_RESTAURANTS_ONE_DAY = "recent_restaurants_one_day";
     public static final String RECENT_RESTAURANTS_ONE_WEEK = "recent_restaurants_one_week";
@@ -54,7 +54,6 @@ public class ListActivityFragment extends ListFragment implements ListActivityVi
     private String mQueryString;
     private ParseUser mCurrentUser;
     private String mCurrentUserId;
-    private ParseRelation<Restaurant> mCurrentRelation;
 
     protected static ListActivityFragment newInstance() {
         ListActivityFragment f = new ListActivityFragment();
@@ -158,11 +157,11 @@ public class ListActivityFragment extends ListFragment implements ListActivityVi
 
         //Deal with how to populate the listView based on the queryCode
         switch (mQueryType) {
-            case ALL_RESTAURATNS:
+            case ALL_RESTAURANTS:
                 //Setup parse query adapter to query for all restaurants;
                 //Here we pass in null for the queryString parameter in the parse adapter constructor as there is no string associated with this query.
 
-                mParseAdapter = mPresenter.createAdapter(getActivity(), ALL_RESTAURATNS, null);
+                mParseAdapter = mPresenter.createAdapter(getActivity(), ALL_RESTAURANTS, null);
 
                 //Set stars if restaurant is in the favorites list
                 break;
@@ -174,7 +173,7 @@ public class ListActivityFragment extends ListFragment implements ListActivityVi
                 break;
 
             default:
-                mParseAdapter = mPresenter.createAdapter(getActivity(), ALL_RESTAURATNS, null);
+                mParseAdapter = mPresenter.createAdapter(getActivity(), ALL_RESTAURANTS, null);
                 break;
         }
 
@@ -300,15 +299,28 @@ public class ListActivityFragment extends ListFragment implements ListActivityVi
                                     Restaurant r = (Restaurant) mParseAdapter.getItem(i);
                                     ParseUser user = ParseUser.getCurrentUser();
                                     ParseRelation<Restaurant> relation = user.getRelation(ParseConstants.RELATION_FAVORITE);
-                                    mCurrentRelation = relation;
-                                    mCurrentRelation.add(r);
+                                    relation.add(r);
+                                    mPresenter.SaveUserRelation(user);
+                                }
+
+                            }
+                            mode.finish();
+                            return true;
+                        case R.id.menu_item_unfavourite_restaurant:
+                            for (int i = mParseAdapter.getCount() - 1; i >= 0; i--) {
+                                if (getListView().isItemChecked(i)) {
+                                    Restaurant r = (Restaurant) mParseAdapter.getItem(i);
+                                    ParseUser user = ParseUser.getCurrentUser();
+                                    ParseRelation<Restaurant> relation = user.getRelation(ParseConstants.RELATION_FAVORITE);
+                                    relation.remove(r);
                                     mPresenter.SaveUserRelation(user);
                                 }
                             }
-
+                            mode.finish();
+                            return true;
+                        default:
+                            return false;
                     }
-                    mode.finish();
-                    return true;
                 }
 
                 @Override
@@ -317,8 +329,6 @@ public class ListActivityFragment extends ListFragment implements ListActivityVi
                 }
             });
         }
-
-
     }
 
     public void onPause() {
@@ -338,10 +348,11 @@ public class ListActivityFragment extends ListFragment implements ListActivityVi
 
     public void onFinishedUpdatingData() {
 
-        mParseAdapter = mPresenter.createAdapter(getActivity(), ALL_RESTAURATNS, null);
+        mParseAdapter = mPresenter.createAdapter(getActivity(), ALL_RESTAURANTS, null);
         setListAdapter(mParseAdapter);
 
     }
+
 
     @Override
     public void onListItemClick(ListView l, View v, int position, long id) {

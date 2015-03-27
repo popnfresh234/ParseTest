@@ -271,4 +271,6 @@ public class Restaurant extends ParseObject {
     public void setImage(ParseFile file) {
         put(ParseConstants.KEY_FILE, file);
     }
+
+
 }
