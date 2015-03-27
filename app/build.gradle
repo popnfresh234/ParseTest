@@ -8,7 +8,7 @@ android {
     buildToolsVersion "21.1.2"
 
     defaultConfig {
-        applicationId "com.dmtaiwan.alexander.parsetest"
+        applicationId "com.dmtaiwan.alexander.hours"
         minSdkVersion 15
         targetSdkVersion 22
         versionCode 1
